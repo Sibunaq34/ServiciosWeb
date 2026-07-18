@@ -144,6 +144,7 @@
     <Compile Include="Repositorios\BitacoraRepository.cs" />
     <Compile Include="Repositorios\CompaniaRepository.cs" />
     <Compile Include="Repositorios\ConcursoRepository.cs" />
+    <Compile Include="Repositorios\DetalleOferenteRepository.cs" />
     <Compile Include="Repositorios\EmpleadosRepository.cs" />
     <Compile Include="Repositorios\EntrevistaRepository.cs" />
     <Compile Include="Repositorios\ExperienciaLaboralRepository.cs" />

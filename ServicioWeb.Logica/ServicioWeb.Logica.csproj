@@ -97,6 +97,7 @@
     <Compile Include="Abstract\IAccionesPersonal.cs" />
     <Compile Include="Abstract\IBitacora.cs" />
     <Compile Include="Abstract\IConcurso.cs" />
+    <Compile Include="Abstract\IDetalleOferente.cs" />
     <Compile Include="Abstract\IEmpleados.cs" />
     <Compile Include="Abstract\InstitucionEducativa.cs" />
     <Compile Include="Abstract\IOferente.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="BitacoraService.cs" />
     <Compile Include="CompaniaService.cs" />
     <Compile Include="ConcursoService.cs" />
+    <Compile Include="DetalleOferenteService.cs" />
     <Compile Include="EmpleadosService.cs" />
     <Compile Include="EncriptadorAESService.cs" />
     <Compile Include="EntrevistaService.cs" />
