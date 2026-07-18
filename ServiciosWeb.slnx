@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ServiciosWeb.AccesoDatos/ServiciosWeb.AccesoDatos.csproj" Id="4c629d92-5b7f-4a9c-b658-703ebb4af7b9" />
+  <Project Path="ServiciosWeb.Modelo/ServiciosWeb.Modelo.csproj" Id="6f429969-7972-46e2-a2d8-392b2aff834a" />
+  <Project Path="ServiciosWeb/ServiciosWeb.csproj" Id="42d81e19-8744-492d-9722-e4352a10050a" />
+  <Project Path="ServicioWeb.Logica/ServicioWeb.Logica.csproj" Id="7da07467-2b8c-43eb-a7ef-3c7a68428cf4" />
+</Solution>
