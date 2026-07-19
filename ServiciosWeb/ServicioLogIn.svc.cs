@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.ServiceModel;
 using Servicios_Medicos.Repository;
 using Servicios_Medicos.Services;
 using ServiciosMedicos.Entities;
@@ -9,41 +11,36 @@ namespace ServiciosWeb
     {
         private readonly AutenticacionServices _authService;
 
-        private readonly UsuariosAdminServices _usuariosAdmin;
-
-
         public ServicioLogIn()
         {
-            var connectionString =
-                ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            var connectionStringSettings = ConfigurationManager.ConnectionStrings["DefaultConnection"];
+            if (connectionStringSettings == null || string.IsNullOrWhiteSpace(connectionStringSettings.ConnectionString))
+            {
+                throw new InvalidOperationException("No se encontró la cadena de conexión DefaultConnection.");
+            }
 
-            IDbConnectionFactory factory =
-                new DbConnectionFactory(connectionString);
+            var connectionString = connectionStringSettings.ConnectionString;
+            IDbConnectionFactory factory = new DbConnectionFactory(connectionString);
 
             var repository = new SeguridadRepository(factory);
             var encriptador = new EncriptadorAESServices();
 
-            _authService =
-                new AutenticacionServices(
-                    repository,
-                    new EncriptadorAESServices());
-
-            var usuariosAdminRepository = new UsuariosAdminRepository(factory);
-
-            _usuariosAdmin =
-                new UsuariosAdminServices(
-                    usuariosAdminRepository,
-                    encriptador);
+            _authService = new AutenticacionServices(repository, encriptador);
         }
 
-        public SeguridadLog Login(string usuario, string password)
+        public ResultadoAutenticacion Login(string usuario, string password)
         {
-            return _authService.Login(usuario, password).Result;
-        }
-
-        public bool Crear(RegistrarUsuario usuario)
-        {
-            return _usuariosAdmin.Crear(usuario).Result;
+            try
+            {
+                return _authService
+                    .Login(usuario, password)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception)
+            {
+                throw new FaultException("No fue posible procesar la autenticación.");
+            }
         }
     }
 }

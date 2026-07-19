@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,7 +68,9 @@
     <Compile Include="InstitucionEducativa.cs" />
     <Compile Include="Oferente.cs" />
     <Compile Include="OferenteCombo.cs" />
+    <Compile Include="OferenteCumplimientoDto.cs" />
     <Compile Include="OferenteDetalle.cs" />
+    <Compile Include="ResultadoAutenticacion.cs" />
     <Compile Include="OferenteListado.cs" />
     <Compile Include="OferenteResumen.cs" />
     <Compile Include="Pantalla.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Puestos.cs" />
     <Compile Include="RegistrarUsuario.cs" />
     <Compile Include="RequisitoPuesto.cs" />
+    <Compile Include="RequisitoPuestoDto.cs" />
     <Compile Include="ResultadoDetalleOferente.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="RolSeleccion.cs" />

@@ -5,8 +5,7 @@ namespace ServiciosMedicos.Services.Abstract
 {
     public interface IUsuario
     {
-
-        Task<SeguridadLog> Login(
+        Task<ResultadoAutenticacion> Login(
             string usuario,
             string password);
     }

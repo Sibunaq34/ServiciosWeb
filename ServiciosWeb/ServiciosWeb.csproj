@@ -111,17 +111,22 @@
   <ItemGroup>
     <Content Include="ServicioDetalleOferente.svc" />
     <Content Include="ServicioLogIn.svc" />
+    <Content Include="ServicioOferentesPuesto.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServicioDetalleOferente.cs" />
     <Compile Include="IServicioLogIn.cs" />
+    <Compile Include="IServicioOferentesPuesto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicioDetalleOferente.svc.cs">
       <DependentUpon>ServicioDetalleOferente.svc</DependentUpon>
     </Compile>
     <Compile Include="ServicioLogIn.svc.cs">
       <DependentUpon>ServicioLogIn.svc</DependentUpon>
+    </Compile>
+    <Compile Include="ServicioOferentesPuesto.svc.cs">
+      <DependentUpon>ServicioOferentesPuesto.svc</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

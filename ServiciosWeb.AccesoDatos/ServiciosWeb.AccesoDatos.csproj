@@ -150,6 +150,8 @@
     <Compile Include="Repositorios\ExperienciaLaboralRepository.cs" />
     <Compile Include="Repositorios\InstitucionEducativaRepository.cs" />
     <Compile Include="Repositorios\OferenteRepository.cs" />
+    <Compile Include="Repositorios\OferentesPorPuestoRepository.cs" />
+    <Compile Include="Repositorios\RequisitosPorPuestoRepository.cs" />
     <Compile Include="Repositorios\PantallasRepository.cs" />
     <Compile Include="Repositorios\ParametrosRepository.cs" />
     <Compile Include="Repositorios\PreparacionAcademicaRepository.cs" />
