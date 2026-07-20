@@ -1,5 +1,6 @@
 ﻿using System.ServiceModel;
 using ServiciosMedicos.Entities;
+using ServiciosWeb.Modelo;
 
 namespace ServiciosWeb
 {
@@ -7,6 +8,7 @@ namespace ServiciosWeb
     public interface IServicioLogIn
     {
         [OperationContract]
+        [FaultContract(typeof(FaultDetail))]
         ResultadoAutenticacion Login(string usuario, string password);
     }
 }
