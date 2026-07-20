@@ -1,0 +1,6 @@
+﻿<%@ ServiceHost
+    Language="C#"
+    Debug="true"
+    Service="ServiciosWeb.ServicioUsuarios"
+    CodeBehind="ServicioUsuarios.svc.cs"
+%>
