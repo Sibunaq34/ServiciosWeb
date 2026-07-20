@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using ServiciosMedicos.Entities;
 using System.ServiceModel;
-using System.Text;
 
 namespace ServiciosWeb
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IServicioEmpleados" in both code and config file together.
     [ServiceContract]
     public interface IServicioEmpleados
     {
         [OperationContract]
-        void DoWork();
+        ResultadoRegistrarEmpleado RegistrarEmpleado(
+            EntradaRegistrarEmpleado entrada);
+
+        [OperationContract]
+        bool OferenteEsEmpleado(int idOferente);
     }
-}
