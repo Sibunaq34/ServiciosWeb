@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,6 +75,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puestos.cs" />
     <Compile Include="RegistrarUsuario.cs" />
+    <Compile Include="EntradaRegistrarEmpleado.cs" />
+    <Compile Include="ResultadoRegistrarEmpleado.cs" />
     <Compile Include="RequisitoPuesto.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="RolSeleccion.cs" />
