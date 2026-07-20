@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using DocumentFormat.OpenXml.Spreadsheet;
 using ServiciosMedicos.Entities;
 using System.Collections.Generic;
 using System.Data;
@@ -121,5 +120,3 @@ namespace Servicios_Medicos.Repository
         }
     }
 }
-//sdas  
-//sdas  
