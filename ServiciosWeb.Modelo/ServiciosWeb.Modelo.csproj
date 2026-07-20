@@ -62,6 +62,7 @@
     <Compile Include="EmpleadoCombo.cs" />
     <Compile Include="EmpleadoContratacion.cs" />
     <Compile Include="EmpleadoResumen.cs" />
+    <Compile Include="EntradaRegistrarEmpleado.cs" />
     <Compile Include="Entrevista.cs" />
     <Compile Include="ExperienciaLaboral.cs" />
     <Compile Include="ExperienciaLaboralDetalleCore8.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="RequisitoPuesto.cs" />
     <Compile Include="RequisitoPuestoDto.cs" />
     <Compile Include="ResultadoDetalleOferente.cs" />
+    <Compile Include="ResultadoRegistrarEmpleado.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="RolSeleccion.cs" />
     <Compile Include="SeguridadLog.cs" />

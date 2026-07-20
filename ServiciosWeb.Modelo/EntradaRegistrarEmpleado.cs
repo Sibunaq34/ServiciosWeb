@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace ServiciosWeb.Modelo
+namespace ServiciosMedicos.Entities
 {
-    internal class EntradaRegistrarEmpleado
+    [DataContract]
+    public class EntradaRegistrarEmpleado
     {
+        [DataMember(IsRequired = true, Order = 1)]
+        public int IdOferente { get; set; }
+
+        [DataMember(IsRequired = true, Order = 2)]
+        public string CodigoPuesto { get; set; } = string.Empty;
+
+        [DataMember(EmitDefaultValue = false, Order = 3)]
+        public int? IdJefatura { get; set; }
+
+        [DataMember(IsRequired = true, Order = 4)]
+        public int IdUsuario { get; set; }
     }
 }

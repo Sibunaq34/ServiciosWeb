@@ -13,3 +13,4 @@ namespace ServiciosWeb
         [OperationContract]
         bool OferenteEsEmpleado(int idOferente);
     }
+}

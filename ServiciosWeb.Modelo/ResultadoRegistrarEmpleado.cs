@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace ServiciosWeb.Modelo
+namespace ServiciosMedicos.Entities
 {
-    internal class ResultadoRegistrarEmpleado
+    [DataContract]
+    public class ResultadoRegistrarEmpleado
     {
+        [DataMember(Order = 1)]
+        public bool Exito { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Codigo { get; set; } = string.Empty;
+
+        [DataMember(Order = 3)]
+        public string Mensaje { get; set; } = string.Empty;
     }
 }
