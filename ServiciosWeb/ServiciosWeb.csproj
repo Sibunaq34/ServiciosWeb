@@ -117,7 +117,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IService1.cs" />
     <Compile Include="IServicioDetalleOferente.cs" />
     <Compile Include="IServicioLogIn.cs" />
     <Compile Include="IServicioOferentesPuesto.cs" />
