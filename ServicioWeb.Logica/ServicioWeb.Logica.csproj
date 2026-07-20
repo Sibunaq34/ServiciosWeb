@@ -129,7 +129,6 @@
     <Compile Include="InstitucionEducativaService.cs" />
     <Compile Include="OferenteService.cs" />
     <Compile Include="OferentesPorPuestoService.cs" />
-    <Compile Include="Abstract\IOferentesPorPuesto.cs" />
     <Compile Include="PantallasService.cs" />
     <Compile Include="ParametroService.cs" />
     <Compile Include="PreparacionAcademicaService.cs" />

@@ -63,21 +63,51 @@ END$$
 DROP PROCEDURE IF EXISTS sp_ObtenerOferentesPorPuesto$$
 CREATE PROCEDURE sp_ObtenerOferentesPorPuesto(IN pCodigoPuesto VARCHAR(100))
 BEGIN
-    SELECT
-        o.id_oferente AS IdOferente,
-        p.nombre_comple AS NombreCompleto,
-        p.identificacion AS Identificacion
-    FROM puestos pu
-    INNER JOIN requisitos_puesto rp ON rp.id_puesto = pu.id_puesto
-    INNER JOIN oferente_requisito orq ON orq.id_requisito = rp.id_requisito
-    INNER JOIN oferentes o ON o.id_oferente = orq.id_oferente
-    INNER JOIN personas p ON p.id_persona = o.id_persona
-    WHERE pu.codigo_puesto = pCodigoPuesto
-      AND pu.activo = 1
-      AND rp.activo = 1
-    GROUP BY o.id_oferente, p.nombre_comple, p.identificacion
-    HAVING COUNT(DISTINCT orq.id_requisito) = (SELECT COUNT(*) FROM requisitos_puesto rp2 WHERE rp2.id_puesto = pu.id_puesto AND rp2.activo = 1)
-    ORDER BY p.nombre_comple;
+    DECLARE vIdPuesto INT DEFAULT NULL;
+    DECLARE vTotalRequisitos INT DEFAULT 0;
+
+    SELECT id_puesto INTO vIdPuesto
+    FROM puestos
+    WHERE codigo_puesto = pCodigoPuesto
+      AND activo = 1
+    LIMIT 1;
+
+    IF vIdPuesto IS NULL THEN
+        SELECT
+            NULL AS IdOferente,
+            NULL AS NombreCompleto,
+            NULL AS Identificacion
+        WHERE 1 = 0;
+    ELSE
+        SELECT COUNT(*) INTO vTotalRequisitos
+        FROM requisitos_puesto
+        WHERE id_puesto = vIdPuesto
+          AND activo = 1;
+
+        IF vTotalRequisitos = 0 THEN
+            SELECT
+                o.id_oferente AS IdOferente,
+                p.nombre_comple AS NombreCompleto,
+                p.identificacion AS Identificacion
+            FROM oferentes o
+            INNER JOIN personas p ON p.id_persona = o.id_persona
+            ORDER BY p.nombre_comple;
+        ELSE
+            SELECT
+                o.id_oferente AS IdOferente,
+                p.nombre_comple AS NombreCompleto,
+                p.identificacion AS Identificacion
+            FROM oferentes o
+            INNER JOIN personas p ON p.id_persona = o.id_persona
+            INNER JOIN oferente_requisito orq ON orq.id_oferente = o.id_oferente
+            INNER JOIN requisitos_puesto rp ON rp.id_requisito = orq.id_requisito
+            WHERE rp.id_puesto = vIdPuesto
+              AND rp.activo = 1
+            GROUP BY o.id_oferente, p.nombre_comple, p.identificacion
+            HAVING COUNT(DISTINCT rp.id_requisito) = vTotalRequisitos
+            ORDER BY p.nombre_comple;
+        END IF;
+    END IF;
 END$$
 
 DELIMITER ;

@@ -12,6 +12,9 @@ namespace Servicios_Medicos.Services
     public class EncriptadorAESServices
     {
         private const string PrefijoGcm = "GCM:";
+        private const int TamanoNonce = 12;
+        private const int TamanoTag = 16;
+        private const int TamanoTagBits = 128;
         private readonly byte[] _clave;
 
         public EncriptadorAESServices()
@@ -36,7 +39,7 @@ namespace Servicios_Medicos.Services
                 return string.Empty;
             }
 
-            var nonce = new byte[12];
+            var nonce = new byte[TamanoNonce];
             using (var rng = new RNGCryptoServiceProvider())
             {
                 rng.GetBytes(nonce);
@@ -44,17 +47,16 @@ namespace Servicios_Medicos.Services
 
             var plaintextBytes = Encoding.UTF8.GetBytes(textoPlano);
             var cipher = new GcmBlockCipher(new AesEngine());
-            var parameters = new KeyParameter(_clave);
-            var aeadParameters = new AeadParameters(parameters, 128, nonce, null);
+            var aeadParameters = new AeadParameters(new KeyParameter(_clave), TamanoTagBits, nonce, null);
             cipher.Init(true, aeadParameters);
 
             var output = new byte[cipher.GetOutputSize(plaintextBytes.Length)];
             var len = cipher.ProcessBytes(plaintextBytes, 0, plaintextBytes.Length, output, 0);
             len += cipher.DoFinal(output, len);
 
-            var bytes = new byte[nonce.Length + len];
-            Buffer.BlockCopy(nonce, 0, bytes, 0, nonce.Length);
-            Buffer.BlockCopy(output, 0, bytes, nonce.Length, len);
+            var bytes = new byte[TamanoNonce + len];
+            Buffer.BlockCopy(nonce, 0, bytes, 0, TamanoNonce);
+            Buffer.BlockCopy(output, 0, bytes, TamanoNonce, len);
 
             return PrefijoGcm + Convert.ToBase64String(bytes);
         }
@@ -69,24 +71,23 @@ namespace Servicios_Medicos.Services
             if (EsFormatoGcm(textoCifrado))
             {
                 var payload = Convert.FromBase64String(textoCifrado.Substring(PrefijoGcm.Length));
-                if (payload.Length < 28)
+                if (payload.Length < TamanoNonce + TamanoTag)
                 {
                     throw new CryptographicException("El texto cifrado GCM es inválido.");
                 }
 
-                var nonce = new byte[12];
+                var nonce = new byte[TamanoNonce];
                 Buffer.BlockCopy(payload, 0, nonce, 0, nonce.Length);
 
-                var cipherTextLength = payload.Length - nonce.Length - 16;
-                var ciphertext = new byte[cipherTextLength];
-                Buffer.BlockCopy(payload, nonce.Length, ciphertext, 0, ciphertext.Length);
+                var cifradoConTag = new byte[payload.Length - TamanoNonce];
+                Buffer.BlockCopy(payload, TamanoNonce, cifradoConTag, 0, cifradoConTag.Length);
 
                 var cipher = new GcmBlockCipher(new AesEngine());
-                var parameters = new AeadParameters(new KeyParameter(_clave), 128, nonce, null);
-                cipher.Init(false, parameters);
+                var aeadParameters = new AeadParameters(new KeyParameter(_clave), TamanoTagBits, nonce, null);
+                cipher.Init(false, aeadParameters);
 
-                var output = new byte[cipher.GetOutputSize(ciphertext.Length)];
-                var len = cipher.ProcessBytes(ciphertext, 0, ciphertext.Length, output, 0);
+                var output = new byte[cipher.GetOutputSize(cifradoConTag.Length)];
+                var len = cipher.ProcessBytes(cifradoConTag, 0, cifradoConTag.Length, output, 0);
                 len += cipher.DoFinal(output, len);
                 return Encoding.UTF8.GetString(output, 0, len);
             }
@@ -104,9 +105,9 @@ namespace Servicios_Medicos.Services
                 }
 
                 var passwordBD = Desencriptar(passwordCifradaBD);
-                return passwordIngresada == passwordBD;
+                return string.Equals(passwordIngresada, passwordBD, StringComparison.Ordinal);
             }
-            catch
+            catch (Exception)
             {
                 return false;
             }
