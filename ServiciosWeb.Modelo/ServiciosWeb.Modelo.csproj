@@ -72,6 +72,7 @@
     <Compile Include="OferenteCumplimientoDto.cs" />
     <Compile Include="OferenteDetalle.cs" />
     <Compile Include="ResultadoAutenticacion.cs" />
+    <Compile Include="FaultDetail.cs" />
     <Compile Include="OferenteListado.cs" />
     <Compile Include="OferenteResumen.cs" />
     <Compile Include="Pantalla.cs" />
