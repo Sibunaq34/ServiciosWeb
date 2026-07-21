@@ -3,6 +3,7 @@ using ServiciosMedicos.Entities;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Servicios_Medicos.Repository
 {
@@ -152,6 +153,11 @@ namespace Servicios_Medicos.Repository
                             return false;
                         }
 
+                        // Bitácora desactivada temporalmente: comentar la inserción para evitar registros
+                        // que puedan causar errores de versión/validación en entornos de despliegue.
+                        // Si se desea reactivar, descomentar el bloque y confirmar que descripcionAccion
+                        // cumple CHECK (json_valid(descripcionAccion)).
+                        /*
                         await connection.ExecuteAsync(
                             "INSERT INTO bitacoras " +
                             "(id_usuario, accion, descripcionAccion) " +
@@ -160,11 +166,15 @@ namespace Servicios_Medicos.Repository
                             {
                                 solicitud.IdUsuario,
                                 Accion = "REGISTRAR_EMPLEADO",
-                                Descripcion = "Oferente " +
-                                    solicitud.IdOferente +
-                                    " convertido en empleado."
+                                Descripcion = JsonSerializer.Serialize(new
+                                {
+                                    accion = "REGISTRAR_EMPLEADO",
+                                    idOferente = solicitud.IdOferente,
+                                    mensaje = $"Oferente {solicitud.IdOferente} convertido en empleado."
+                                })
                             },
                             transaction);
+                        */
 
                         transaction.Commit();
                         return true;

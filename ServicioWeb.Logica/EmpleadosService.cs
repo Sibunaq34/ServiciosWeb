@@ -75,11 +75,13 @@ namespace ServiciosMedicos.Services
                         "DATABASE_ERROR",
                         "La base de datos no confirmó la creación.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Return the underlying exception message to help debugging during development.
+                // Remove or change this in production to avoid leaking internal details.
                 return Error(
                     "DATABASE_ERROR",
-                    "No fue posible guardar el empleado.");
+                    "No fue posible guardar el empleado. Detalle: " + ex.Message);
             }
         }
 
