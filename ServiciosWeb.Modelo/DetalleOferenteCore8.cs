@@ -4,12 +4,10 @@ using System.Collections.Generic;
 namespace ServiciosMedicos.Entities
 {
     // Persona C - Kenneth
-    // Agrupa el detalle completo confirmado para CORE8.
+    // Agrupa el detalle registrado por AUT3 para CORE8.
     public class DetalleOferenteCore8
     {
         public int IdOferente { get; set; }
-
-        public int IdPersona { get; set; }
 
         public string Identificacion { get; set; } = string.Empty;
 
@@ -19,19 +17,12 @@ namespace ServiciosMedicos.Entities
 
         public DateTime FechaNacimiento { get; set; }
 
-        public DateTime FechaRegistro { get; set; }
-
         public List<string> Correos { get; set; } = new List<string>();
 
         public List<string> Telefonos { get; set; } = new List<string>();
 
-        public List<PreparacionAcademicaDetalleCore8> PreparacionAcademica { get; set; } =
-            new List<PreparacionAcademicaDetalleCore8>();
+        public PuestoPostulacionDetalleCore8 Puesto { get; set; }
 
-        public List<ExperienciaLaboralDetalleCore8> ExperienciaLaboral { get; set; } =
-            new List<ExperienciaLaboralDetalleCore8>();
-
-        public List<ParticipacionConcursoDetalleCore8> Participaciones { get; set; } =
-            new List<ParticipacionConcursoDetalleCore8>();
+        public CurriculumDetalleCore8 Curriculum { get; set; }
     }
 }
