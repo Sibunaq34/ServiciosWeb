@@ -5,13 +5,19 @@ using System.Linq;
 using Servicios_Medicos.Repository;
 using Servicios_Medicos.Services;
 using ServiciosMedicos.Entities;
+using System.ComponentModel.Design;
 
 namespace ServiciosWeb
 {
     public class ServicioPuestos : IServicioPuestos
     {
         private readonly PuestosService _puestosService;
+        private readonly 
+        public ServicioPuestos()
+            : this(CrearServicio()
+        {
 
+        }
         public ServicioPuestos()
         {
             var connectionStringSettings =
@@ -45,6 +51,16 @@ namespace ServiciosWeb
                 .GetAwaiter()
                 .GetResult()
                 .ToList();
+        }
+        private static IServicioPuestos CrearServicio()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["EjemploWebServiceDb"]?.ConnectionString;
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ConfigurationErrorsException("No se encontró la string de conexión 'EjemploWebServiceDb'.");
+            }
+
+            return new PuestoService(connectionString);
         }
     }
 }
