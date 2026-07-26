@@ -4,41 +4,41 @@ using ServiciosMedicos.Services.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
 namespace Servicios_Medicos.Services
 {
     public class PuestosService : IPuestos
     {
-        private readonly PuestosRepository _puestosBD;
+        private readonly IPuestosRepository _puestosRepository;
 
-        public PuestosService(PuestosRepository puestosBD)
+        public PuestosService(string connectionString)
         {
-            _puestosBD = puestosBD;
+            IDbConnectionFactory factory = new DbConnectionFactory(connectionString);
+            _puestosRepository = new PuestosRepository(factory);
         }
 
-        public async Task<IEnumerable<Puesto>> ListarPuestos()
+        public Task<IEnumerable<Puesto>> ListarPuestos()
         {
-            return await _puestosBD.ListarPuestos();
+            return _puestosRepository.ListarPuestos();
         }
 
-        public async Task<Puesto> ObtenerPuesto(int idPuesto)
+        public Task<Puesto> ObtenerPuesto(int idPuesto)
         {
-            return await _puestosBD.ObtenerPuesto(idPuesto);
+            return _puestosRepository.ObtenerPuesto(idPuesto);
         }
 
-        public async Task<bool> InsertarPuesto(Puesto puesto)
+        public Task<bool> InsertarPuesto(Puesto puesto)
         {
-            return await _puestosBD.InsertarPuesto(puesto);
+            return _puestosRepository.InsertarPuesto(puesto);
         }
 
-        public async Task<bool> ActualizarPuesto(Puesto puesto)
+        public Task<bool> ActualizarPuesto(Puesto puesto)
         {
-            return await _puestosBD.ActualizarPuesto(puesto);
+            return _puestosRepository.ActualizarPuesto(puesto);
         }
 
-        public async Task<bool> EliminarPuesto(int idPuesto)
+        public Task<bool> EliminarPuesto(int idPuesto)
         {
-            return await _puestosBD.EliminarPuesto(idPuesto);
+            return _puestosRepository.EliminarPuesto(idPuesto);
         }
     }
 }
