@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Servicios_Medicos.Repository
 {
-    public class PuestosRepository
+    public class PuestosRepository : IPuestosRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -31,10 +31,7 @@ namespace Servicios_Medicos.Repository
             {
                 return await connection.QuerySingleOrDefaultAsync<Puesto>(
                     "SP_ObtenerPuesto",
-                    new
-                    {
-                        pIdPuesto = idPuesto
-                    },
+                    new { pIdPuesto = idPuesto },
                     commandType: CommandType.StoredProcedure);
             }
         }
@@ -84,10 +81,7 @@ namespace Servicios_Medicos.Repository
             {
                 var filas = await connection.ExecuteAsync(
                     "SP_EliminarPuesto",
-                    new
-                    {
-                        pIdPuesto = idPuesto
-                    },
+                    new { pIdPuesto = idPuesto },
                     commandType: CommandType.StoredProcedure);
 
                 return filas > 0;
