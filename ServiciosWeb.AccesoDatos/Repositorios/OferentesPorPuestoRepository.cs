@@ -28,5 +28,17 @@ namespace Servicios_Medicos.Repository
                 return result ?? Enumerable.Empty<OferenteCumplimientoDto>();
             }
         }
+
+        public async Task<IEnumerable<OferenteCumplimientoDto>> ListarTodos()
+        {
+            using (var connection = _dbConnectionFactory.CreateConnection())
+            {
+                var result = await connection.QueryAsync<OferenteCumplimientoDto>(
+                    "SP_ListarOferentes",
+                    commandType: CommandType.StoredProcedure);
+
+                return result ?? Enumerable.Empty<OferenteCumplimientoDto>();
+            }
+        }
     }
 }

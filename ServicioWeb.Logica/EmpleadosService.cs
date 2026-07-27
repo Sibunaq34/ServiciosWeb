@@ -17,6 +17,16 @@ namespace ServiciosMedicos.Services
             _empleadosBD = empleadosBD;
         }
 
+        // Convenience constructor that accepts a connection string and
+        // creates the repository internally. This keeps the WCF layer thin
+        // and allows it to instantiate the service by passing only the
+        // connection string (pattern used in PuestosService).
+        public EmpleadosService(string connectionString)
+        {
+            IDbConnectionFactory factory = new DbConnectionFactory(connectionString);
+            _empleadosBD = new EmpleadosRepository(factory);
+        }
+
         public async Task<IEnumerable<OferenteCombo>> ListarOferentes()
         {
             return await _empleadosBD.ListarOferentes();

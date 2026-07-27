@@ -1,6 +1,6 @@
-﻿using Servicios_Medicos.Repository;
-using ServiciosMedicos.Entities;
+﻿using ServiciosMedicos.Entities;
 using ServiciosMedicos.Services;
+using ServiciosMedicos.Services.Abstract;
 using System;
 using System.Configuration;
 
@@ -8,19 +8,16 @@ namespace ServiciosWeb
 {
     public class ServicioEmpleados : IServicioEmpleados
     {
-        private readonly EmpleadosService _service;
+        private readonly IEmpleados _service;
 
         public ServicioEmpleados()
+            : this(CrearServicio())
         {
-            var connectionString = ConfigurationManager
-                .ConnectionStrings["DefaultConnection"]
-                .ConnectionString;
+        }
 
-            IDbConnectionFactory factory =
-                new DbConnectionFactory(connectionString);
-
-            _service = new EmpleadosService(
-                new EmpleadosRepository(factory));
+        internal ServicioEmpleados(IEmpleados service)
+        {
+            _service = service;
         }
 
         public ResultadoRegistrarEmpleado RegistrarEmpleado(
@@ -54,6 +51,22 @@ namespace ServiciosWeb
             {
                 return false;
             }
+        }
+
+        private static IEmpleados CrearServicio()
+        {
+            var connectionString = ConfigurationManager
+                .ConnectionStrings["DefaultConnection"]
+                ?.ConnectionString;
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ConfigurationErrorsException(
+                    "No se encontró la cadena de conexión 'DefaultConnection'."
+                );
+            }
+
+            return new EmpleadosService(connectionString);
         }
     }
 }

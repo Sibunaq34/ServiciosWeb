@@ -12,5 +12,8 @@ namespace ServiciosWeb
 
         [OperationContract]
         List<OferenteCumplimientoDto> ListarOferentesPorPuesto(string codigoPuesto);
+
+        [OperationContract]
+        List<OferenteCumplimientoDto> ListarTodosLosOferentes();
     }
 }

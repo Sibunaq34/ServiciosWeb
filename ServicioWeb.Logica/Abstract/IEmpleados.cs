@@ -18,5 +18,11 @@ namespace ServiciosMedicos.Services.Abstract
         Task<bool>
             ContratarEmpleado(
             EmpleadoContratacion empleado);
+
+        Task<ResultadoRegistrarEmpleado>
+            RegistrarEmpleado(EntradaRegistrarEmpleado solicitud);
+
+        Task<bool>
+            OferenteEsEmpleado(int idOferente);
     }
 }
