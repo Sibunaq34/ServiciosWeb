@@ -10,10 +10,16 @@ namespace Servicios_Medicos.Services
     // Coordina la consulta y construye la respuesta de CORE8.
     public class DetalleOferenteService : IDetalleOferente
     {
-        private readonly DetalleOferenteRepository _repository;
+        private readonly IDetalleOferenteRepository _repository;
 
         public DetalleOferenteService(
-            DetalleOferenteRepository repository)
+            string connectionString)
+            : this(CrearRepository(connectionString))
+        {
+        }
+
+        public DetalleOferenteService(
+            IDetalleOferenteRepository repository)
         {
             _repository = repository;
         }
@@ -74,6 +80,15 @@ namespace Servicios_Medicos.Services
                 Mensaje = mensaje,
                 Datos = datos
             };
+        }
+
+        private static IDetalleOferenteRepository CrearRepository(
+            string connectionString)
+        {
+            IDbConnectionFactory factory =
+                new DbConnectionFactory(connectionString);
+
+            return new DetalleOferenteRepository(factory);
         }
     }
 }

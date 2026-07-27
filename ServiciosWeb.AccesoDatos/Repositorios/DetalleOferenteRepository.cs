@@ -10,7 +10,7 @@ namespace Servicios_Medicos.Repository
 {
     // Persona C - Kenneth
     // Consulta solo el detalle registrado por AUT3 sin modificar la base.
-    public class DetalleOferenteRepository
+    public class DetalleOferenteRepository : IDetalleOferenteRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
