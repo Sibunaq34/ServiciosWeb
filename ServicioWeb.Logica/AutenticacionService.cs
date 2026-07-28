@@ -21,6 +21,29 @@ namespace Servicios_Medicos.Services
             _aes = aes;
         }
 
+        public AutenticacionServices(string connectionString)
+            : this(
+                CrearRepository(connectionString),
+                new EncriptadorAESServices())
+        {
+        }
+
+        private static ISeguridadRepository CrearRepository(
+            string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentException(
+                    "La cadena de conexión es obligatoria.",
+                    nameof(connectionString));
+            }
+
+            IDbConnectionFactory factory =
+                new DbConnectionFactory(connectionString);
+
+            return new SeguridadRepository(factory);
+        }
+
         public async Task<ResultadoAutenticacion> Login(string usuario, string password)
         {
             if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(password))

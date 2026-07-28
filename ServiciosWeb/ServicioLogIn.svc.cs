@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.ServiceModel;
-using Servicios_Medicos.Repository;
 using Servicios_Medicos.Services;
 using ServiciosMedicos.Entities;
 using ServiciosMedicos.Services.Abstract;
@@ -36,19 +35,8 @@ namespace ServiciosWeb
                     "No se encontró la cadena de conexión DefaultConnection.");
             }
 
-            var connectionString =
-                connectionStringSettings.ConnectionString;
-
-            IDbConnectionFactory factory =
-                new DbConnectionFactory(connectionString);
-
-            var repository =
-                new SeguridadRepository(factory);
-
-            var encriptador =
-                new EncriptadorAESServices();
-
-            return new AutenticacionServices(repository, encriptador);
+            return new AutenticacionServices(
+                connectionStringSettings.ConnectionString);
         }
 
         public ResultadoAutenticacion Login(string usuario, string password)
