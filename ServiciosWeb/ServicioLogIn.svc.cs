@@ -4,13 +4,14 @@ using System.ServiceModel;
 using Servicios_Medicos.Repository;
 using Servicios_Medicos.Services;
 using ServiciosMedicos.Entities;
+using ServiciosMedicos.Services.Abstract;
 using ServiciosWeb.Modelo;
 
 namespace ServiciosWeb
 {
     public class ServicioLogIn : IServicioLogIn
     {
-        private readonly AutenticacionServices _authService;
+        private readonly IUsuario _authService;
 
         public ServicioLogIn()
         {
@@ -38,6 +39,12 @@ namespace ServiciosWeb
 
             _authService =
                 new AutenticacionServices(repository, encriptador);
+        }
+
+        internal ServicioLogIn(IUsuario authService)
+        {
+            _authService = authService ??
+                throw new ArgumentNullException(nameof(authService));
         }
 
         public ResultadoAutenticacion Login(string usuario, string password)

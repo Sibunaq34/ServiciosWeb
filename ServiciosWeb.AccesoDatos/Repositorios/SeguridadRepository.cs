@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Servicios_Medicos.Repository
 {
-    public class SeguridadRepository
+    public class SeguridadRepository : ISeguridadRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -25,17 +25,13 @@ namespace Servicios_Medicos.Repository
             }
         }
 
-        public async Task RegistrarIntentoFallido(int idUsuario, int intentos)
+        public async Task RegistrarIntentoFallido(int idUsuario)
         {
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
                 await connection.ExecuteAsync(
                     "RegistrarIntentoFallido",
-                    new
-                    {
-                        pIdUsuario = idUsuario,
-                        pIntentos = intentos
-                    },
+                    new { pIdUsuario = idUsuario },
                     commandType: CommandType.StoredProcedure);
             }
         }

@@ -10,11 +10,11 @@ namespace Servicios_Medicos.Services
     {
         private const string MensajeGenerico = "Usuario y/o contraseña incorrectos.";
 
-        private readonly SeguridadRepository _seguridadBD;
+        private readonly ISeguridadRepository _seguridadBD;
         private readonly EncriptadorAESServices _aes;
 
         public AutenticacionServices(
-            SeguridadRepository seguridadBD,
+            ISeguridadRepository seguridadBD,
             EncriptadorAESServices aes)
         {
             _seguridadBD = seguridadBD;
@@ -57,8 +57,7 @@ namespace Servicios_Medicos.Services
 
             if (!valido)
             {
-                var intentos = entidad.IntentosFallidos + 1;
-                await _seguridadBD.RegistrarIntentoFallido(entidad.IdUsuario, intentos);
+                await _seguridadBD.RegistrarIntentoFallido(entidad.IdUsuario);
 
                 return new ResultadoAutenticacion
                 {
