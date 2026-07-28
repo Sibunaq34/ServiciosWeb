@@ -9,5 +9,7 @@ namespace ServiciosMedicos.Services.Abstract
         Task<IEnumerable<OferenteCumplimientoDto>> ListarOferentesPorPuesto(string codigoPuesto);
 
         Task<IEnumerable<RequisitoPuestoDto>> ListarRequisitosPorPuesto(string codigoPuesto);
+
+        Task<IEnumerable<OferenteCumplimientoDto>> ListarTodos();
     }
 }

@@ -8,6 +8,6 @@ namespace ServiciosWeb
     public interface IServicioPuestos
     {
         [OperationContract]
-        List<Puesto> ListarPuestosActivos();
+        List<Puesto> ListarPuestos();
     }
 }

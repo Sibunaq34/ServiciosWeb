@@ -137,7 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDDbConnectionFactory.cs" />
+    <Compile Include="IDetalleOferenteRepository.cs" />
     <Compile Include="Infraestructura\DbConnectionFactory.cs" />
+    <Compile Include="IPuestosRepository.cs" />
     <Compile Include="Repositorios\AccionesPersonaRepository.cs" />
     <Compile Include="Repositorios\AreaRepository.cs" />
     <Compile Include="Repositorios\BitacoraConsultaRepository.cs" />

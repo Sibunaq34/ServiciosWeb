@@ -3,6 +3,7 @@ using ServiciosMedicos.Entities;
 using ServiciosMedicos.Services.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace ServiciosMedicos.Services
 {
@@ -14,6 +15,16 @@ namespace ServiciosMedicos.Services
             EmpleadosRepository empleadosBD)
         {
             _empleadosBD = empleadosBD;
+        }
+
+        // Convenience constructor that accepts a connection string and
+        // creates the repository internally. This keeps the WCF layer thin
+        // and allows it to instantiate the service by passing only the
+        // connection string (pattern used in PuestosService).
+        public EmpleadosService(string connectionString)
+        {
+            IDbConnectionFactory factory = new DbConnectionFactory(connectionString);
+            _empleadosBD = new EmpleadosRepository(factory);
         }
 
         public async Task<IEnumerable<OferenteCombo>> ListarOferentes()
@@ -35,6 +46,87 @@ namespace ServiciosMedicos.Services
         {
             return await _empleadosBD
                 .ContratarEmpleado(empleado);
+        }
+
+        public async Task<ResultadoRegistrarEmpleado> RegistrarEmpleado(
+            EntradaRegistrarEmpleado solicitud)
+        {
+            if (solicitud == null || solicitud.IdOferente <= 0 ||
+                string.IsNullOrWhiteSpace(solicitud.CodigoPuesto) ||
+                solicitud.CodigoPuesto.Length > 20 ||
+                solicitud.IdUsuario <= 0 ||
+                (solicitud.IdJefatura.HasValue &&
+                 solicitud.IdJefatura.Value <= 0))
+            {
+                return Error(
+                    "VALIDATION_ERROR",
+                    "La solicitud contiene datos inválidos.");
+            }
+
+            var validacion = await _empleadosBD
+                .ValidarContratacion(solicitud);
+
+            if (!string.IsNullOrEmpty(validacion))
+                return Error(validacion, MensajePara(validacion));
+
+            try
+            {
+                var creado = await _empleadosBD
+                    .RegistrarEmpleado(solicitud);
+
+                return creado
+                    ? new ResultadoRegistrarEmpleado
+                    {
+                        Exito = true,
+                        Codigo = "EMPLOYEE_CREATED",
+                        Mensaje = "El empleado fue creado correctamente."
+                    }
+                    : Error(
+                        "DATABASE_ERROR",
+                        "La base de datos no confirmó la creación.");
+            }
+            catch (Exception ex)
+            {
+                // Return the underlying exception message to help debugging during development.
+                // Remove or change this in production to avoid leaking internal details.
+                return Error(
+                    "DATABASE_ERROR",
+                    "No fue posible guardar el empleado. Detalle: " + ex.Message);
+            }
+        }
+
+        public Task<bool> OferenteEsEmpleado(int idOferente)
+        {
+            return _empleadosBD.OferenteEsEmpleado(idOferente);
+        }
+
+        private static ResultadoRegistrarEmpleado Error(
+            string codigo,
+            string mensaje)
+        {
+            return new ResultadoRegistrarEmpleado
+            {
+                Exito = false,
+                Codigo = codigo,
+                Mensaje = mensaje
+            };
+        }
+
+        private static string MensajePara(string codigo)
+        {
+            switch (codigo)
+            {
+                case "OFFERER_NOT_FOUND":
+                    return "El oferente no existe.";
+                case "EMPLOYEE_ALREADY_EXISTS":
+                    return "El oferente ya fue convertido en empleado.";
+                case "POSITION_NOT_FOUND":
+                    return "El puesto no existe.";
+                case "MANAGER_NOT_FOUND":
+                    return "La jefatura indicada no existe.";
+                default:
+                    return "No fue posible validar la solicitud.";
+            }
         }
 
     }

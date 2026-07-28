@@ -14,6 +14,17 @@ namespace ServiciosWeb
         private readonly IUsuario _authService;
 
         public ServicioLogIn()
+            : this(CrearServicio())
+        {
+        }
+
+        internal ServicioLogIn(IUsuario authService)
+        {
+            _authService = authService ??
+                throw new ArgumentNullException(nameof(authService));
+        }
+
+        private static IUsuario CrearServicio()
         {
             var connectionStringSettings =
                 ConfigurationManager.ConnectionStrings["DefaultConnection"];
@@ -37,14 +48,7 @@ namespace ServiciosWeb
             var encriptador =
                 new EncriptadorAESServices();
 
-            _authService =
-                new AutenticacionServices(repository, encriptador);
-        }
-
-        internal ServicioLogIn(IUsuario authService)
-        {
-            _authService = authService ??
-                throw new ArgumentNullException(nameof(authService));
+            return new AutenticacionServices(repository, encriptador);
         }
 
         public ResultadoAutenticacion Login(string usuario, string password)

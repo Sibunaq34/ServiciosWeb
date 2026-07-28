@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.ServiceModel;
-using Servicios_Medicos.Repository;
 using Servicios_Medicos.Services;
 using ServiciosMedicos.Entities;
+using ServiciosMedicos.Services.Abstract;
 
 namespace ServiciosWeb
 {
     public class ServicioOferentesPuesto : IServicioOferentesPuesto
     {
-        private readonly OferentesPorPuestoService _service;
+        private readonly IOferentesPorPuesto _service;
 
         public ServicioOferentesPuesto()
+            : this(CrearServicio())
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var factory = new DbConnectionFactory(connectionString);
-            var oferentesRepository = new OferentesPorPuestoRepository(factory);
-            var requisitosRepository = new RequisitosPorPuestoRepository(factory);
-            _service = new OferentesPorPuestoService(oferentesRepository, requisitosRepository);
+        }
+
+        internal ServicioOferentesPuesto(IOferentesPorPuesto service)
+        {
+            _service = service;
         }
 
         public List<RequisitoPuestoDto> ListarRequisitosPorPuesto(string codigoPuesto)
@@ -58,6 +59,39 @@ namespace ServiciosWeb
             {
                 throw new FaultException("No fue posible consultar la información del puesto.");
             }
+        }
+
+        public List<OferenteCumplimientoDto> ListarTodosLosOferentes()
+        {
+            try
+            {
+                var resultados = _service.ListarTodos()
+                    .GetAwaiter()
+                    .GetResult()
+                    .Where(x => !string.IsNullOrWhiteSpace(x.NombreCompleto) && !string.IsNullOrWhiteSpace(x.Identificacion))
+                    .OrderBy(x => x.NombreCompleto)
+                    .ToList();
+
+                return resultados ?? new List<OferenteCumplimientoDto>();
+            }
+            catch
+            {
+                throw new FaultException("No fue posible consultar la información del puesto.");
+            }
+        }
+
+        private static IOferentesPorPuesto CrearServicio()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString;
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ConfigurationErrorsException(
+                    "No se encontró la cadena de conexión 'DefaultConnection'."
+                );
+            }
+
+            return new OferentesPorPuestoService(connectionString);
         }
     }
 }
