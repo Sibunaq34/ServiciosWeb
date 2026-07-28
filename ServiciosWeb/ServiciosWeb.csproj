@@ -157,10 +157,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiciosWeb.AccesoDatos\ServiciosWeb.AccesoDatos.csproj">
-      <Project>{4c629d92-5b7f-4a9c-b658-703ebb4af7b9}</Project>
-      <Name>ServiciosWeb.AccesoDatos</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ServiciosWeb.Modelo\ServiciosWeb.Modelo.csproj">
       <Project>{6f429969-7972-46e2-a2d8-392b2aff834a}</Project>
       <Name>ServiciosWeb.Modelo</Name>

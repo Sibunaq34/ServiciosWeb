@@ -12,7 +12,7 @@ namespace Servicios_Medicos.Services
         private readonly OferentesPorPuestoRepository _oferentesRepository;
         private readonly RequisitosPorPuestoRepository _requisitosRepository;
 
-        public OferentesPorPuestoService(
+        internal OferentesPorPuestoService(
             OferentesPorPuestoRepository oferentesRepository,
             RequisitosPorPuestoRepository requisitosRepository)
         {

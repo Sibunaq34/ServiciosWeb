@@ -11,7 +11,7 @@ namespace ServiciosMedicos.Services
     {
         private readonly EmpleadosRepository _empleadosBD;
 
-        public EmpleadosService(
+        internal EmpleadosService(
             EmpleadosRepository empleadosBD)
         {
             _empleadosBD = empleadosBD;

@@ -15,10 +15,20 @@ namespace Servicios_Medicos.Services
         private readonly EncriptadorAESServices _encriptadorAES;
   
 
-        public UsuariosAdminServices(UsuariosAdminRepository usuariosBD, EncriptadorAESServices encriptadorAES)
+        internal UsuariosAdminServices(UsuariosAdminRepository usuariosBD, EncriptadorAESServices encriptadorAES)
         {
             _usuariosBD = usuariosBD;
             _encriptadorAES = encriptadorAES;
+        }
+
+        // Convenience constructor that accepts a connection string and creates
+        // the required repository and encrypter internally so the WCF layer
+        // can remain free of data access dependencies.
+        public UsuariosAdminServices(string connectionString)
+        {
+            IDbConnectionFactory factory = new DbConnectionFactory(connectionString);
+            _usuariosBD = new UsuariosAdminRepository(factory);
+            _encriptadorAES = new EncriptadorAESServices();
         }
 
         public Task<IEnumerable<UsuarioAdmin>> Listar()

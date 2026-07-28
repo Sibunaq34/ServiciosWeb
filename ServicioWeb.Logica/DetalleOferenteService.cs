@@ -18,7 +18,7 @@ namespace Servicios_Medicos.Services
         {
         }
 
-        public DetalleOferenteService(
+        internal DetalleOferenteService(
             IDetalleOferenteRepository repository)
         {
             _repository = repository;
